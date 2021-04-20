@@ -269,7 +269,9 @@ public enum States implements State {
       throw new IllegalArgumentException();
     }
 
-    System.out.println("You inserted " + Math.round(amount*100.0)/100.0);
+    CustomPrintStream.print("You inserted " + Math.round(amount*100.0)/100.0);
+//    System.out.print("You inserted " + Math.round(amount*100.0)/100.0);
+//    System.out.print(System.lineSeparator());
     vendingMachine.setInsertedAmount(vendingMachine.getInsertedAmount() + amount);
     vendingMachine.setState(Has_Currency_State);
 

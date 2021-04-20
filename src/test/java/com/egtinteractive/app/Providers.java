@@ -36,8 +36,8 @@ public class Providers {
     return new Object[][]{{vendingMachine, amount}};
   }
 
-  @DataProvider(name = "providerForAddCurrency")
-  public Object[][] providerForAddCurrency(){
+  @DataProvider(name = "providerForAddCurrencySysOutRedirect")
+  public Object[][] providerForAddCurrencySysOutRedirect(){
 
     PrintStream originalSystemOut;
     originalSystemOut = System.out;
@@ -53,7 +53,20 @@ public class Providers {
       amount = new Random().nextFloat();
     }while (amount <= 0 );
 
-    return new Object[][]{{vendingMachine, Math.round(amount*100.0)/100.0, systemOutContent, originalSystemOut}};
+    return new Object[][]{{vendingMachine, (float)Math.round(amount*100.0)/100.0, systemOutContent, originalSystemOut}};
+  }
+
+  @DataProvider(name = "providerForAddCurrency")
+  public Object[][] providerForAddCurrency(){
+
+    final VendingMachine vendingMachine = new VendingMachine();
+    float amount;
+
+    do {
+      amount = new Random().nextFloat();
+    }while (amount <= 0 );
+
+    return new Object[][]{{vendingMachine, Math.round(amount*100.0)/100.0}};
   }
 
   @DataProvider(name = "providerForMessage")

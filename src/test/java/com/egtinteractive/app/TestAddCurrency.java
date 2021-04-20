@@ -18,18 +18,33 @@ public class TestAddCurrency{
     vendingMachine.addCurrency(amount);
   }
 
-  @Test(dataProvider = "providerForAddCurrency", dataProviderClass = Providers.class)
-  public void noCurrencyState(final VendingMachine vendingMachine, final float amount, ByteArrayOutputStream outContent, PrintStream original){
+/*  @Test(dataProvider = "providerForAddCurrencySysOutRedirect", dataProviderClass = Providers.class)
+  public void noCurrencyState(final VendingMachine vendingMachine, final double amount, ByteArrayOutputStream outContent, PrintStream original){
 
-    vendingMachine.addCurrency(amount);
+    float f = (float)amount;
+    vendingMachine.addCurrency(f);
 
     final String actual = outContent.toString().substring(0, outContent.size() - 1);
+    final String message = VendingMachine.getSuccessfulInsertMessage() + amount;
+    assertEquals(actual, message + System.lineSeparator());
+    assertEquals(vendingMachine.getInsertedAmount(), amount);
+    assertEquals(vendingMachine.getState(), States.Has_Currency_State);
+
+    System.setOut(original);
+  }*/
+
+  @Test(dataProvider = "providerForAddCurrency", dataProviderClass = Providers.class)
+  public void noCurrencyState(final VendingMachine vendingMachine, final double amount){
+
+    float f = (float)amount;
+    vendingMachine.addCurrency(f);
+
+    final String actual = CustomPrintStream.getMessage();
     final String message = VendingMachine.getSuccessfulInsertMessage() + amount;
     assertEquals(actual, message);
     assertEquals(vendingMachine.getInsertedAmount(), amount);
     assertEquals(vendingMachine.getState(), States.Has_Currency_State);
 
-    System.setOut(original);
   }
 
   @Test(dataProvider = "providerForAddCurrency", dataProviderClass = Providers.class)
