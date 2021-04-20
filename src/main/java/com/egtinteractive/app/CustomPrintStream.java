@@ -12,6 +12,10 @@ public class CustomPrintStream {
         messages.add(message);
     }
 
+    public static void print(){
+        System.out.println();
+    }
+
     public static String getMessage() {
         return messages.get(index++);
     }

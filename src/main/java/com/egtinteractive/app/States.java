@@ -9,19 +9,19 @@ import static com.egtinteractive.app.VendingMachine.*;
 public enum States implements State {
 
   No_Currency_State{
-    public void selectItem(VendingMachine vendingMachine) { System.out.println(getNoCurrencySelectMessage());}
-    public void makeItem(VendingMachine vendingMachine) {System.out.println(getNoCurrencyMakeMessage());}
-    public void takeItem(VendingMachine vendingMachine) {System.out.println(getNoCurrencyTakeMessage());}
-    public void returnMoney(VendingMachine vendingMachine) {System.out.println(getNoCurrencyReturnMoneyMessage());}
+    public void selectItem(VendingMachine vendingMachine) { CustomPrintStream.print(getNoCurrencySelectMessage());}
+    public void makeItem(VendingMachine vendingMachine) {CustomPrintStream.print(getNoCurrencyMakeMessage());}
+    public void takeItem(VendingMachine vendingMachine) {CustomPrintStream.print(getNoCurrencyTakeMessage());}
+    public void returnMoney(VendingMachine vendingMachine) {CustomPrintStream.print(getNoCurrencyReturnMoneyMessage());}
     public void service(VendingMachine vendingMachine) {
     }
-    public void endService(VendingMachine vendingMachine) {System.out.println(getNoCurrencyEndServiceMessage());}
+    public void endService(VendingMachine vendingMachine) {CustomPrintStream.print(getNoCurrencyEndServiceMessage());}
   }, Has_Currency_State{
-    public void addCurrency(float amount, VendingMachine vendingMachine) {System.out.println(getHasCurrencyInsertMessage());}
+    public void addCurrency(float amount, VendingMachine vendingMachine) {CustomPrintStream.print(getHasCurrencyInsertMessage());}
     public void selectItem(VendingMachine vendingMachine) {
 
-      System.out.println(getEnterSelectionMessage());
-      System.out.println(Arrays.toString(vendingMachine.getAvailableItems().keySet().toArray()));
+      CustomPrintStream.print(getEnterSelectionMessage());
+      CustomPrintStream.print(Arrays.toString(vendingMachine.getAvailableItems().keySet().toArray()));
 
       boolean itemPresentInList;
       Items chosenItem;
@@ -52,11 +52,11 @@ public enum States implements State {
             vendingMachine.addItemToChosen(chosenItem.getName(), currentMapping.getQuantity());
             chosenItem.setCount(chosenItem.getCount() - 1);
 
-            System.out.println(getAnotherDrinkMessage());
+            CustomPrintStream.print(getAnotherDrinkMessage());
 
             String anotherDrink;
             do {
-              System.out.println(getYesOrNoMessage());
+              CustomPrintStream.print(getYesOrNoMessage());
               anotherDrink = sc.nextLine();
             } while (!(anotherDrink.equalsIgnoreCase("Y") || anotherDrink.equalsIgnoreCase("N")));
 
@@ -68,16 +68,16 @@ public enum States implements State {
             }
 
           } else {
-            System.out.println("Insufficient amount to purchase " + chosenItem.getName() + ".");
-            System.out.println(
+            CustomPrintStream.print("Insufficient amount to purchase " + chosenItem.getName() + ".");
+            CustomPrintStream.print(
                 "You need to insert " + (chosenItem.getPrice() - vendingMachine.getInsertedAmount()));
             vendingMachine.setState(No_Currency_State);
             return;
           }
 
         } else {
-          System.out.println(getUnvalidBeverageNameMessage());
-          System.out.println(Arrays.toString(vendingMachine.getAvailableItems().keySet().toArray()));
+          CustomPrintStream.print(getUnvalidBeverageNameMessage());
+          CustomPrintStream.print(Arrays.toString(vendingMachine.getAvailableItems().keySet().toArray()));
 
         }
 
@@ -86,15 +86,15 @@ public enum States implements State {
       vendingMachine.setState(Item_Selected_State);
 
     }
-    public void makeItem(VendingMachine vendingMachine) {System.out.println(getHasCurrencyMakeMessage());}
-    public void takeItem(VendingMachine vendingMachine) {System.out.println(getHasCurrencyTakeMessage());}
+    public void makeItem(VendingMachine vendingMachine) {CustomPrintStream.print(getHasCurrencyMakeMessage());}
+    public void takeItem(VendingMachine vendingMachine) {CustomPrintStream.print(getHasCurrencyTakeMessage());}
     public void service(VendingMachine vendingMachine) {}
     public void endService(VendingMachine vendingMachine) {
-      System.out.println(getHasCurrencyEndServiceMessage());
+      CustomPrintStream.print(getHasCurrencyEndServiceMessage());
     }
   }, Item_Selected_State{
     public void selectItem(VendingMachine vendingMachine) {
-      System.out.println(getItemSelectedSelectMessage());
+      CustomPrintStream.print(getItemSelectedSelectMessage());
       vendingMachine.setState(No_Currency_State);
     }
     public void makeItem(VendingMachine vendingMachine) {
@@ -112,15 +112,15 @@ public enum States implements State {
           }
 
         }else{
-          System.out.println("Which item do you want?");
-          System.out.println(Arrays.toString(vendingMachine.getChosenItems().keySet().toArray()));
+          CustomPrintStream.print("Which item do you want?");
+          CustomPrintStream.print(Arrays.toString(vendingMachine.getChosenItems().keySet().toArray()));
 
           Scanner sc = new Scanner(System.in);
           String input;
 
           while(!vendingMachine.getChosenItems().containsKey(input = sc.nextLine())){
-            System.out.println("You should enter valid beverage name !");
-            System.out.println(vendingMachine.getChosenItems().toString());
+            CustomPrintStream.print("You should enter valid beverage name !");
+            CustomPrintStream.print(vendingMachine.getChosenItems().toString());
           }
 
           removedItem = input;
@@ -129,13 +129,13 @@ public enum States implements State {
         vendingMachine.removeItemFromChosen(removedItem);
         counter += 1;
 
-        System.out.println("Your " + removedItem + " is being made...");
+        CustomPrintStream.print("Your " + removedItem + " is being made...");
 
         if(counter == 1){
-          System.out.println("Your drink is ready !");
+          CustomPrintStream.print("Your drink is ready !");
         }
         else{
-          System.out.println("Your drinks are ready !");
+          CustomPrintStream.print("Your drinks are ready !");
         }
 
       }
@@ -144,20 +144,20 @@ public enum States implements State {
 
     }
     public void takeItem(VendingMachine vendingMachine) {
-      System.out.println(getItemSelectedTakeMessage());
+      CustomPrintStream.print(getItemSelectedTakeMessage());
     }
     public void service(VendingMachine vendingMachine) {}
-    public void returnMoney(VendingMachine vendingMachine){ System.out.println(getItemSelectedReturnMoneyMessage());};
-    public void endService(VendingMachine vendingMachine){ System.out.println(getItemSelectedEndServiceMessage());}
+    public void returnMoney(VendingMachine vendingMachine){ CustomPrintStream.print(getItemSelectedReturnMoneyMessage());};
+    public void endService(VendingMachine vendingMachine){ CustomPrintStream.print(getItemSelectedEndServiceMessage());}
   }, Item_Made_State{
     public void addCurrency(float amount, VendingMachine vendingMachine) {
-      System.out.println(getItemMadeInsertMessage());
+      CustomPrintStream.print(getItemMadeInsertMessage());
     }
     public void selectItem(VendingMachine vendingMachine) {
-      System.out.println(getItemMadeSelectMessage());
+      CustomPrintStream.print(getItemMadeSelectMessage());
     }
     public void makeItem(VendingMachine vendingMachine) {
-      System.out.println(getItemMadeMakeMessage());
+      CustomPrintStream.print(getItemMadeMakeMessage());
     }
     public void takeItem(VendingMachine vendingMachine) {
 
@@ -168,58 +168,58 @@ public enum States implements State {
       }
 
       if(counter == 1){
-        System.out.println("Take you drink !");
+        CustomPrintStream.print("Take you drink !");
       }else{
-        System.out.println("Take your drinks !");
+        CustomPrintStream.print("Take your drinks !");
       }
       vendingMachine.setState(Item_Taken_State);
     }
     public void returnMoney(VendingMachine vendingMachine){
-      System.out.println(getItemMadeReturnMoneyMessage());
+      CustomPrintStream.print(getItemMadeReturnMoneyMessage());
     }
     public void service(VendingMachine vendingMachine) {
 
     }
     public void endService(VendingMachine vendingMachine) {
-      System.out.println(getItemMadeEndServiceMessage());
+      CustomPrintStream.print(getItemMadeEndServiceMessage());
     }
   },
   Item_Taken_State{
     public void selectItem(VendingMachine vendingMachine) {
-      System.out.println(getItemTakenSelectMessage());
+      CustomPrintStream.print(getItemTakenSelectMessage());
       vendingMachine.setState(No_Currency_State);
     }
     public void makeItem(VendingMachine vendingMachine) {
-      System.out.println(getItemTakenMakeMessage());
+      CustomPrintStream.print(getItemTakenMakeMessage());
       vendingMachine.setState(No_Currency_State);
     }
     public void takeItem(VendingMachine vendingMachine) {
 
-      System.out.println(getItemTakenTakeMessage());
+      CustomPrintStream.print(getItemTakenTakeMessage());
     }
     public void service(VendingMachine vendingMachine) {
     }
     public void endService(VendingMachine vendingMachine) {
-      System.out.println(getItemTakenEndServiceMessage());
+      CustomPrintStream.print(getItemTakenEndServiceMessage());
     }
   }, Money_Returned_State{
     public void addCurrency(float amount, VendingMachine vendingMachine) {
-      System.out.println(getMoneyReturnedMessage());
+      CustomPrintStream.print(getMoneyReturnedMessage());
     }
     public void selectItem(VendingMachine vendingMachine) {
-      System.out.println(getMoneyReturnedMessage());
+      CustomPrintStream.print(getMoneyReturnedMessage());
 
     }
     public void makeItem(VendingMachine vendingMachine) {
-      System.out.println(getMoneyReturnedMessage());
+      CustomPrintStream.print(getMoneyReturnedMessage());
 
     }
     public void takeItem(VendingMachine vendingMachine) {
-      System.out.println(getMoneyReturnedMessage());
+      CustomPrintStream.print(getMoneyReturnedMessage());
 
     }
     public void returnMoney(VendingMachine vendingMachine) {
-      System.out.println(getMoneyReturnedMessage());
+      CustomPrintStream.print(getMoneyReturnedMessage());
 
     }
     public void service(VendingMachine vendingMachine) {
@@ -228,37 +228,37 @@ public enum States implements State {
   }, Service_State{
     @Override
     public void addCurrency(float amount, VendingMachine vendingMachine) {
-      System.out.println();
+      CustomPrintStream.print();
     }
 
     @Override
     public void returnMoney(VendingMachine vendingMachine) {
-      System.out.println();
+      CustomPrintStream.print();
     }
 
     @Override
     public void endService(VendingMachine vendingMachine) {
-      System.out.println();
+      CustomPrintStream.print();
     }
 
     @Override
     public void selectItem(VendingMachine vendingMachine) {
-      System.out.println();
+      CustomPrintStream.print();
     }
 
     @Override
     public void makeItem(VendingMachine vendingMachine) {
-      System.out.println();
+      CustomPrintStream.print();
     }
 
     @Override
     public void takeItem(VendingMachine vendingMachine) {
-      System.out.println();
+      CustomPrintStream.print();
     }
 
     @Override
     public void service(VendingMachine vendingMachine) {
-      System.out.println();
+      CustomPrintStream.print();
     }
 
   };
@@ -269,7 +269,7 @@ public enum States implements State {
       throw new IllegalArgumentException();
     }
 
-    System.out.println("You inserted " + Math.round(amount*100.0)/100.0);
+    CustomPrintStream.print("You inserted " + Math.round(amount*100.0)/100.0);
     vendingMachine.setInsertedAmount(vendingMachine.getInsertedAmount() + amount);
     vendingMachine.setState(Has_Currency_State);
 
@@ -282,9 +282,9 @@ public enum States implements State {
     vendingMachine.setInsertedAmount(0.0f);
 
     if(change == 0){
-      System.out.println(getNoChangeMessage());
+      CustomPrintStream.print(getNoChangeMessage());
     }else{
-      System.out.println(getChangeMessage() + change);
+      CustomPrintStream.print(getChangeMessage() + change);
     }
 
     vendingMachine.setState(Money_Returned_State);
@@ -298,7 +298,7 @@ public enum States implements State {
       }
     }
 
-    System.out.println("Machine is ready for next order !");
+    CustomPrintStream.print("Machine is ready for next order !");
     vendingMachine.setState(No_Currency_State);
 
   }
